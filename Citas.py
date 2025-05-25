@@ -1,4 +1,4 @@
-from Paciente import Paciente
+from paciente import Paciente
 class Cita:
     contador_clave = 1
 
