@@ -1,5 +1,5 @@
 from Citas import Agenda
-from Paciente import Paciente
+from paciente import Paciente
 from Usuario import Usuario
 
 # Diccionario de pacientes registrados
