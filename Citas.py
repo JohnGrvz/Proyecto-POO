@@ -4,7 +4,6 @@ from paciente import Paciente
 from errores import FechaHoraInvalidaError
 class Cita:
     contador_clave = 1
-
     def __init__(self, paciente, fecha, hora):
         self.validar_fecha_hora(fecha, hora)
 
@@ -18,7 +17,7 @@ class Cita:
     def validar_fecha_hora(fecha, hora):
         try:
             datetime.strptime(fecha, "%Y-%m-%d")
-            datetime.strptime(hora, "%I:%M %p")  # Ej: 03:45 PM
+            datetime.strptime(hora, "%I:%M %p")
         except ValueError:
             raise FechaHoraInvalidaError()
     def modificar_cita(self, nueva_fecha, nueva_hora):
