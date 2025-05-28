@@ -69,6 +69,8 @@ def main():
                 print("No se encontró una cita pendiente con ese código.\n")
 
         elif opcion == "5":
+            if not pacientes_registrados:
+                print("No hay registros\n")
             for paciente in pacientes_registrados.values():
                 print(paciente)
 
