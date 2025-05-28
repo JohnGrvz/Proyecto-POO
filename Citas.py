@@ -23,20 +23,14 @@ class Cita:
     def modificar_cita(self, nueva_fecha, nueva_hora):
         self.fecha = nueva_fecha
         self.hora = nueva_hora
-    def cancelar_cita(self):
-        self.fecha = None
-        self.hora = None
-        self.paciente = None
     def marcar_como_realizada(self, tratamiento, costo, pacientes_registrados):
         self.realizada = True
         if self.paciente not in pacientes_registrados:
             pacientes_registrados[self.paciente] = Paciente(self.paciente)
         pacientes_registrados[self.paciente].agregar_historia_clinica(tratamiento, costo, self.fecha)
-
         cuidados = generar_cuidados_por_ia(tratamiento)
         print("\n💡 Cuidados sugeridos por IA:")
         print(cuidados + "\n")
-
     def __str__(self):
         estado = "Realizada" if self.realizada else "Pendiente"
         return f"Cita {self.numero_clave}: {self.paciente} - {self.fecha} a las {self.hora} ({estado})"
