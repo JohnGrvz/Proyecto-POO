@@ -6,7 +6,6 @@ class Cita:
     contador_clave = 1
     def __init__(self, paciente, fecha, hora):
         self.validar_fecha_hora(fecha, hora)
-
         self.paciente = paciente
         self.fecha = fecha
         self.hora = hora
