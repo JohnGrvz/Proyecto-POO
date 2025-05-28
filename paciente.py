@@ -36,6 +36,9 @@ class Paciente:
         return historial_str
 
     def exportar_historial_pdf(self):
+        if not self.historial:
+            print("No hay historial clínico para exportar.")
+            return
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", size=12)
