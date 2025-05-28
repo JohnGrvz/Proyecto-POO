@@ -33,6 +33,7 @@ def mostrar_menu():
     print("7. Mostrar historial de un paciente")
     print("8. Buscar cita por paciente")
     print("9. Cancelar cita")
+    print("10. Exportar historial clínico a PDF")
     print("0. Salir")
 
 def main():
@@ -97,6 +98,14 @@ def main():
         elif opcion == "9":
             codigo = input("Ingrese el código de la cita a cancelar: ")
             agenda.cancelar_cita(codigo)
+
+        elif opcion == "10":
+            nombre = input("Nombre del paciente: ")
+            if nombre in pacientes_registrados:
+                pacientes_registrados[nombre].exportar_historial_pdf()
+            else:
+                print("Paciente no encontrado.\n")
+
 
         elif opcion == "0":
             print("Saliendo del sistema... ¡Hasta luego!")

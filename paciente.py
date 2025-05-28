@@ -1,3 +1,5 @@
+from fpdf import FPDF
+
 class HistoriaClinica:
     def __init__(self, nombre: str, tratamiento: str, costo: float, fecha: str):
         self.nombre = nombre
@@ -32,3 +34,15 @@ class Paciente:
         for historia in self.historial:
             historial_str += str(historia) + "\n"
         return historial_str
+
+    def exportar_historial_pdf(self):
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt=f"Historial clínico de {self.nombre}", ln=True, align='C')
+        pdf.ln(10)
+        for historia in self.historial:
+            pdf.multi_cell(0, 10, txt=str(historia))
+        archivo = f"{self.nombre}_historial.pdf"
+        pdf.output(archivo)
+        print(f"PDF exportado exitosamente: {archivo}")
