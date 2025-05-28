@@ -1,4 +1,4 @@
-
+from cuidados_AI import generar_cuidados_por_ia
 from paciente import Paciente
 class Cita:
     contador_clave = 1
@@ -21,6 +21,11 @@ class Cita:
         if self.paciente not in pacientes_registrados:
             pacientes_registrados[self.paciente] = Paciente(self.paciente)
         pacientes_registrados[self.paciente].agregar_historia_clinica(tratamiento, costo, self.fecha)
+
+        cuidados = generar_cuidados_por_ia(tratamiento)
+        print("\n💡 Cuidados sugeridos por IA:")
+        print(cuidados + "\n")
+
     def __str__(self):
         estado = "Realizada" if self.realizada else "Pendiente"
         return f"Cita {self.numero_clave}: {self.paciente} - {self.fecha} a las {self.hora} ({estado})"
