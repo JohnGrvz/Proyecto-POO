@@ -10,7 +10,7 @@ def generar_cuidados_por_ia(tratamiento):
     prompt = f"Dado el tratamiento odontológico: '{tratamiento}', sugiere cuidados posteriores específicos para el paciente."
     try:
         respuesta = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "Eres un asistente dental profesional."},
                 {"role": "user", "content": prompt}
