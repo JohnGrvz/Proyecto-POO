@@ -1,10 +1,8 @@
 import os
 import openai
-from dotenv import load_dotenv
 
-load_dotenv()
 
-client = openai.OpenAI(api_key=os.getenv("API_KEY_OPENAI"))
+client = openai.OpenAI(api_key="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")
 
 def generar_cuidados_por_ia(tratamiento):
     prompt = f"Dado el tratamiento odontológico: '{tratamiento}', sugiere cuidados posteriores específicos para el paciente."
