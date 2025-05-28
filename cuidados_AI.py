@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = openai.OpenAI(api_key=os.getenv("API_KEY_OPENAI"))
 
 def generar_cuidados_por_ia(tratamiento):
     prompt = f"Dado el tratamiento odontológico: '{tratamiento}', sugiere cuidados posteriores específicos para el paciente."
