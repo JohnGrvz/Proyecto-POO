@@ -55,8 +55,8 @@ class Agenda:
                 return cita.numero_clave
         return None
     def cancelar_cita(self, clave):
-        for cita in self.citas:
-            if cita.numero_clave == clave:
-                cita.cancelar_cita()
-                return True
-        return False
+     for i, cita in enumerate(self.citas):
+        if cita.numero_clave == clave:
+            del self.citas[i]
+            return True
+     return False
