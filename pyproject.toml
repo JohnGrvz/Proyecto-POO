@@ -3,4 +3,6 @@ name = "proyecto-poo"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fpdf>=1.7.2",
+]
