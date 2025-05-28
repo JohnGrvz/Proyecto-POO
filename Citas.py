@@ -38,7 +38,6 @@ class Agenda:
             if cita.paciente == paciente:
                 return cita.numero_clave
         return None
-
     def cancelar_cita(self, clave):
         for cita in self.citas:
             if cita.numero_clave == clave:
