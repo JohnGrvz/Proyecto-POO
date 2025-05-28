@@ -1,0 +1,9 @@
+[project]
+name = "proyecto-poo"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "fpdf>=1.7.2",
+]
