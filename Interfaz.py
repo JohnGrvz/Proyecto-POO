@@ -70,7 +70,7 @@ def main():
 
         elif opcion == "5":
             for paciente in pacientes_registrados.values():
-                print(paciente)
+                return f"{paciente}"
 
         elif opcion == "6":
             nombre = input("Nombre del paciente: ")
@@ -80,20 +80,20 @@ def main():
             if nombre in pacientes_registrados:
                 pacientes_registrados[nombre].editar_historia(fecha, nuevo_tratamiento, nuevo_costo)
             else:
-                print("Paciente no encontrado.\n")
+                return "Paciente no encontrado.\n"
 
         elif opcion == "7":
             nombre = input("Nombre del paciente: ")
             if nombre in pacientes_registrados:
                 print(pacientes_registrados[nombre])
             else:
-                print("Paciente no encontrado.\n")
+                return "Paciente no encontrado.\n"
 
         elif opcion == "8":
             nombre = input("Nombre del paciente para buscar cita: ")
             clave = agenda.buscar_cita(nombre)
             if clave:
-                print(f"Código de la cita: {clave}")
+                return f"Código de la cita: {clave}"
 
         elif opcion == "9":
             codigo = input("Ingrese el código de la cita a cancelar: ")
@@ -104,7 +104,7 @@ def main():
             if nombre in pacientes_registrados:
                 pacientes_registrados[nombre].exportar_historial_pdf()
             else:
-                print("Paciente no encontrado.\n")
+                return "Paciente no encontrado.\n"
 
 
         elif opcion == "0":
