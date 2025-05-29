@@ -2,7 +2,7 @@ import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
 from Citas import Agenda
 from Usuario import Usuario
-from errores import FechaHoraInvalidaError
+from errores import CamposObligatoriosVaciosError, FechaHoraInvalidaError
 from tkinter import messagebox
 import tkinter as tk
 pacientes_registrados = {}
@@ -13,7 +13,7 @@ class DentalApp:
         self.root = root
         self.root.title("Consultorio Odontológico")
         self.root.geometry("800x600")
-        self.style = ttkb.Style(theme='flatly')  # Tema moderno
+        self.style = ttkb.Style(theme='flatly')
         self.show_login()
     def show_login(self):
         """Muestra la ventana de login"""
@@ -157,4 +157,59 @@ class DentalApp:
         text_area.config(state='disabled')
 
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
+    def show_edit_history(self):
+        """Muestra el formulario para editar historia clínica"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Editar Historia Clínica", font=("Helvetica", 16, "bold")).pack(pady=10)
+
+        ttkb.Label(frame, text="Nombre del paciente:").pack(pady=5)
+        nombre_entry = ttkb.Entry(frame)
+        nombre_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Fecha (YYYY-MM-DD):").pack(pady=5)
+        fecha_entry = ttkb.Entry(frame)
+        fecha_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Nuevo tratamiento:").pack(pady=5)
+        tratamiento_entry = ttkb.Entry(frame)
+        tratamiento_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Nuevo costo:").pack(pady=5)
+        costo_entry = ttkb.Entry(frame)
+        costo_entry.pack(pady=5, fill='x')
+
+        def edit():
+            try:
+                nombre = nombre_entry.get().strip()
+                fecha = fecha_entry.get().strip()
+                nuevo_tratamiento = tratamiento_entry.get().strip()
+                costo_texto = costo_entry.get().strip()
+
+                if not nombre or not fecha or not nuevo_tratamiento or not costo_texto:
+                    raise CamposObligatoriosVaciosError("Todos los campos son obligatorios.")
+
+                try:
+                    nuevo_costo = float(costo_texto)
+                except ValueError:
+                    raise ValueError("El costo debe ser un número válido.")
+
+                if nombre not in pacientes_registrados:
+                    raise ValueError("Paciente no encontrado.")
+
+                exito = pacientes_registrados[nombre].editar_historia(fecha, nuevo_tratamiento, nuevo_costo)
+                if not exito:
+                    raise FechaHoraInvalidaError("No se encontró una historia con esa fecha.")
+
+                messagebox.showinfo("Éxito", "Historia clínica editada correctamente.")
+                self.show_main_menu()
+
+            except (CamposObligatoriosVaciosError, FechaHoraInvalidaError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Editar", bootstyle=SUCCESS, command=edit).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
