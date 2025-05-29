@@ -69,7 +69,6 @@ class DentalApp:
             ("Cancelar cita", self.show_cancel_appointment),
             ("Exportar historial a PDF", self.show_export_pdf),
             ("Salir", self.exit_app)
-            ("Generar cuidados por IA", self.show_ai_care_generation),
 
         ]
 
