@@ -1,16 +1,13 @@
-import tkinter as tk
-from tkinter import messagebox
 import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
-
 from Citas import Agenda
 from Usuario import Usuario
-
+from errores import FechaHoraInvalidaError
+from tkinter import messagebox
+import tkinter as tk
 pacientes_registrados = {}
 agenda = Agenda()
 usuario_app = Usuario()
-
-
 class DentalApp:
     def __init__(self, root):
         self.root = root
@@ -18,7 +15,6 @@ class DentalApp:
         self.root.geometry("800x600")
         self.style = ttkb.Style(theme='flatly')  # Tema moderno
         self.show_login()
-
     def show_login(self):
         """Muestra la ventana de login"""
         self.clear_window()
@@ -28,7 +24,6 @@ class DentalApp:
         frame.pack(expand=True, fill='both')
 
         ttkb.Label(frame, text="Bienvenido al Sistema Odontológico", font=("Helvetica", 16, "bold")).pack(pady=10)
-
         ttkb.Label(frame, text="Usuario:").pack(pady=5)
         self.user_entry = ttkb.Entry(frame)
         self.user_entry.pack(pady=5, fill='x')
@@ -38,7 +33,6 @@ class DentalApp:
         self.pass_entry.pack(pady=5, fill='x')
 
         ttkb.Button(frame, text="Iniciar Sesión", bootstyle=SUCCESS, command=self.verify_login).pack(pady=20)
-
     def verify_login(self):
         """Verifica las credenciales de login"""
         user = self.user_entry.get()
@@ -122,9 +116,10 @@ class DentalApp:
                 clave = agenda.agendar_cita(paciente_entry.get(), fecha_entry.get(), hora_entry.get())
                 messagebox.showinfo("Éxito", f"Cita agendada con código: {clave}")
                 self.show_main_menu()
+            except FechaHoraInvalidaError as e:
+                messagebox.showerror("Error de fecha/hora", str(e))
             except Exception as e:
-                messagebox.showerror("Error", str(e))
-
+                messagebox.showerror("Error", f"Ocurrió un error al agendar la cita: {str(e)}")
         ttkb.Button(frame, text="Agendar", bootstyle=SUCCESS, command=schedule).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
