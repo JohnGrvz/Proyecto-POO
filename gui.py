@@ -128,3 +128,19 @@ class DentalApp:
         ttkb.Button(frame, text="Agendar", bootstyle=SUCCESS, command=schedule).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
+    def show_coded_appointments(self):
+        """Muestra las citas pendientes"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Citas Pendientes con Código", font=("Helvetica", 16, "bold")).pack(pady=10)
+        text_area = ttkb.Text(frame, height=15)
+        text_area.pack(fill='both', expand=True, padx=10, pady=10)
+
+        for cita in agenda.listar_citas_pendientes():
+            text_area.insert(tk.END, cita + "\n")
+        text_area.config(state='disabled')
+
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
