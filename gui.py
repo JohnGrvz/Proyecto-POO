@@ -5,6 +5,7 @@ from Usuario import Usuario
 from errores import CamposObligatoriosVaciosError, FechaHoraInvalidaError
 from tkinter import messagebox
 import tkinter as tk
+from cuidados_AI import generar_cuidados_por_ia
 pacientes_registrados = {}
 agenda = Agenda()
 usuario_app = Usuario()
@@ -68,7 +69,8 @@ class DentalApp:
             ("Buscar cita por paciente", self.search_appointment),
             ("Cancelar cita", self.show_cancel_appointment),
             ("Exportar historial a PDF", self.show_export_pdf),
-            ("Salir", self.exit_app)
+            ("Salir", self.exit_app),
+            ("Generar cuidados con IA", self.show_generate_ai_care)
 
         ]
 
@@ -402,6 +404,40 @@ class DentalApp:
         """Cierra la aplicación"""
         messagebox.showinfo("Saliendo", "¡Hasta luego!")
         self.root.destroy()
+
+    def show_generate_ai_care(self):
+        """Vista para generar cuidados con IA"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Generar Cuidados con IA", font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttkb.Label(frame, text="Tratamiento realizado:").pack(pady=5)
+        tratamiento_entry = ttkb.Entry(frame)
+        tratamiento_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Cuidados sugeridos:").pack(pady=5)
+        cuidados_text = ttkb.Text(frame, height=10)
+        cuidados_text.pack(pady=5, fill='both', expand=True)
+
+        def generar():
+            tratamiento = tratamiento_entry.get().strip()
+            if not tratamiento:
+                messagebox.showerror("Error", "Debe ingresar el tratamiento realizado.")
+                return
+            cuidados_text.delete(1.0, tk.END)
+            cuidados_text.insert(tk.END, "Generando cuidados, por favor espere...\n")
+            self.root.update()
+            try:
+                cuidados = generar_cuidados_por_ia(tratamiento)
+                cuidados_text.delete(1.0, tk.END)
+                cuidados_text.insert(tk.END, cuidados)
+            except Exception as e:
+                cuidados_text.delete(1.0, tk.END)
+                cuidados_text.insert(tk.END, f"Error: {e}")
+
+        ttkb.Button(frame, text="Generar Cuidados", bootstyle=SUCCESS, command=generar).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
 if __name__ == "__main__":
     root = ttkb.Window()
