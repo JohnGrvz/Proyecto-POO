@@ -280,3 +280,63 @@ class DentalApp:
 
         ttkb.Button(frame, text="Buscar", bootstyle=SUCCESS, command=search).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
+def show_cancel_appointment(self):
+    """Muestra el formulario para cancelar cita"""
+    self.clear_window()
+    frame = ttkb.Frame(self.root, padding=20)
+    frame.pack(expand=True, fill='both')
+
+    ttkb.Label(frame, text="Cancelar Cita", font=("Helvetica", 16, "bold")).pack(pady=10)
+    ttkb.Label(frame, text="Código de la cita:").pack(pady=5)
+    codigo_entry = ttkb.Entry(frame)
+    codigo_entry.pack(pady=5, fill='x')
+
+    def cancel():
+        try:
+            codigo = codigo_entry.get().strip()
+
+            if not codigo:
+                raise CamposObligatoriosVaciosError("Debe ingresar el código de la cita.")
+
+            if agenda.cancelar_cita(codigo):
+                messagebox.showinfo("Éxito", "Cita cancelada.")
+                self.show_main_menu()
+            else:
+                raise ValueError("No se encontró una cita con ese código.")
+
+        except (CamposObligatoriosVaciosError, ValueError) as e:
+            messagebox.showerror("Error", str(e))
+
+    ttkb.Button(frame, text="Cancelar", bootstyle=DANGER, command=cancel).pack(pady=10)
+    ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
+    def show_cancel_appointment(self):
+        """Muestra el formulario para cancelar cita"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Cancelar Cita", font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttkb.Label(frame, text="Código de la cita:").pack(pady=5)
+        codigo_entry = ttkb.Entry(frame)
+        codigo_entry.pack(pady=5, fill='x')
+
+        def cancel():
+            try:
+                codigo = codigo_entry.get().strip()
+
+                if not codigo:
+                    raise CamposObligatoriosVaciosError("Debe ingresar el código de la cita.")
+
+                if agenda.cancelar_cita(codigo):
+                    messagebox.showinfo("Éxito", "Cita cancelada.")
+                    self.show_main_menu()
+                else:
+                    raise ValueError("No se encontró una cita con ese código.")
+
+            except (CamposObligatoriosVaciosError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Cancelar", bootstyle=DANGER, command=cancel).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
