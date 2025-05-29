@@ -29,16 +29,28 @@ class Paciente:
         for historia in self.historial:
             historial_str += str(historia) + "\n"
         return historial_str
+
     def exportar_historial_pdf(self):
         if not self.historial:
-            return None  # Nada que exportar
+            return None
+
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", size=12)
         pdf.cell(200, 10, txt=f"Historial clínico de {self.nombre}", ln=True, align='C')
         pdf.ln(10)
+
         for historia in self.historial:
-            pdf.multi_cell(0, 10, txt=str(historia))
+            pdf.set_font("Arial", 'B', 12)
+            pdf.cell(0, 10, txt="Cita registrada:", ln=True)
+            pdf.set_font("Arial", size=12)
+            pdf.cell(0, 10, txt=f"Fecha: {historia.fecha}", ln=True)
+            pdf.cell(0, 10, txt=f"Tratamiento: {historia.tratamiento}", ln=True)
+            pdf.cell(0, 10, txt=f"Costo: ${historia.costo:.2f}", ln=True)
+            pdf.ln(5)
+            pdf.cell(0, 5, txt="----------------------------", ln=True)
+            pdf.ln(5)
+
         archivo = f"{self.nombre}_historial.pdf"
         pdf.output(archivo)
-        return archivo  # Devuelve el nombre del archivo PDF generado
+        return archivo

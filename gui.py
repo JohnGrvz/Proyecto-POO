@@ -340,3 +340,38 @@ def show_cancel_appointment(self):
 
         ttkb.Button(frame, text="Cancelar", bootstyle=DANGER, command=cancel).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
+    def show_export_pdf(self):
+        """Muestra el formulario para exportar historial a PDF"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Exportar Historial a PDF", font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttkb.Label(frame, text="Nombre del paciente:").pack(pady=5)
+        nombre_entry = ttkb.Entry(frame)
+        nombre_entry.pack(pady=5, fill='x')
+
+        def export():
+            try:
+                nombre = nombre_entry.get().strip()
+
+                if not nombre:
+                    raise CamposObligatoriosVaciosError("Debe ingresar el nombre del paciente.")
+
+                if nombre not in pacientes_registrados:
+                    raise ValueError("Paciente no encontrado.")
+
+                archivo = pacientes_registrados[nombre].exportar_historial_pdf()
+
+                if archivo:
+                    messagebox.showinfo("Éxito", f"Historial exportado como {archivo}")
+                    self.show_main_menu()
+                else:
+                    raise ValueError("No hay historial para exportar.")
+
+            except (CamposObligatoriosVaciosError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Exportar", bootstyle=SUCCESS, command=export).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
