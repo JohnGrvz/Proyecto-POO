@@ -375,3 +375,13 @@ def show_cancel_appointment(self):
 
         ttkb.Button(frame, text="Exportar", bootstyle=SUCCESS, command=export).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
+    def exit_app(self):
+        """Cierra la aplicación"""
+        messagebox.showinfo("Saliendo", "¡Hasta luego!")
+        self.root.destroy()
+
+if __name__ == "__main__":
+    root = ttkb.Window()
+    app = DentalApp(root)
+    root.mainloop()
