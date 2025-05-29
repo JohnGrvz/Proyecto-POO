@@ -213,3 +213,40 @@ class DentalApp:
         ttkb.Button(frame, text="Editar", bootstyle=SUCCESS, command=edit).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
+    def show_patient_history(self):
+        """Muestra el historial de un paciente"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Historial de Paciente", font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttkb.Label(frame, text="Nombre del paciente:").pack(pady=5)
+        nombre_entry = ttkb.Entry(frame)
+        nombre_entry.pack(pady=5, fill='x')
+
+        def show():
+            try:
+                nombre = nombre_entry.get().strip()
+
+                if not nombre:
+                    raise CamposObligatoriosVaciosError("Debe ingresar el nombre del paciente.")
+
+                if nombre not in pacientes_registrados:
+                    raise ValueError("Paciente no encontrado.")
+
+                self.clear_window()
+                frame = ttkb.Frame(self.root, padding=20)
+                frame.pack(expand=True, fill='both')
+                ttkb.Label(frame, text=f"Historial de {nombre}", font=("Helvetica", 16, "bold")).pack(pady=10)
+                text_area = ttkb.Text(frame, height=15)
+                text_area.pack(fill='both', expand=True, padx=10, pady=10)
+                text_area.insert(tk.END, pacientes_registrados[nombre].obtener_historial_como_texto())
+                text_area.config(state='disabled')
+                ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
+            except (CamposObligatoriosVaciosError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Mostrar", bootstyle=SUCCESS, command=show).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
