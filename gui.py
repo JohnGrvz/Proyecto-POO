@@ -124,7 +124,7 @@ class DentalApp:
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
     def show_coded_appointments(self):
-        """Muestra las citas pendientes"""
+        """Muestra las citas con codigo"""
         self.clear_window()
         frame = ttkb.Frame(self.root, padding=20)
         frame.pack(expand=True, fill='both')
@@ -138,6 +138,57 @@ class DentalApp:
         text_area.config(state='disabled')
 
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
+    def show_mark_appointment(self):
+        """Muestra el formulario para marcar cita como realizada"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Marcar Cita como Realizada", font=("Helvetica", 16, "bold")).pack(pady=10)
+
+        ttkb.Label(frame, text="Código de la cita:").pack(pady=5)
+        codigo_entry = ttkb.Entry(frame)
+        codigo_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Tratamiento realizado:").pack(pady=5)
+        tratamiento_entry = ttkb.Entry(frame)
+        tratamiento_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Costo del tratamiento:").pack(pady=5)
+        costo_entry = ttkb.Entry(frame)
+        costo_entry.pack(pady=5, fill='x')
+
+        def mark():
+            try:
+                codigo = codigo_entry.get().strip()
+                tratamiento = tratamiento_entry.get().strip()
+                costo_texto = costo_entry.get().strip()
+
+                if not codigo or not tratamiento or not costo_texto:
+                    raise CamposObligatoriosVaciosError("Todos los campos son obligatorios.")
+
+                try:
+                    costo = float(costo_texto)
+                except ValueError:
+                    raise ValueError("El costo debe ser un número válido.")
+
+                for cita in agenda.citas:
+                    if cita.numero_clave == codigo:
+                        if cita.realizada:
+                            raise ValueError("La cita ya fue marcada como realizada.")
+                        cita.marcar_como_realizada(tratamiento, costo, pacientes_registrados)
+                        messagebox.showinfo("Éxito", "Cita marcada como realizada y historia clínica registrada.")
+                        self.show_main_menu()
+                        return
+
+                raise ValueError("No se encontró una cita pendiente con ese código.")
+
+            except (CamposObligatoriosVaciosError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Marcar Realizada", bootstyle=SUCCESS, command=mark).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
     def show_clinical_histories(self):
         """Muestra todas las historias clínicas"""
