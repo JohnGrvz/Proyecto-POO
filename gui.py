@@ -97,3 +97,34 @@ class DentalApp:
 
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
 
+    def show_schedule_appointment(self):
+        """Muestra el formulario para agendar cita"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Agendar Nueva Cita", font=("Helvetica", 16, "bold")).pack(pady=10)
+
+        ttkb.Label(frame, text="Nombre del paciente:").pack(pady=5)
+        paciente_entry = ttkb.Entry(frame)
+        paciente_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Fecha (YYYY-MM-DD):").pack(pady=5)
+        fecha_entry = ttkb.Entry(frame)
+        fecha_entry.pack(pady=5, fill='x')
+
+        ttkb.Label(frame, text="Hora (HH:MM AM/PM):").pack(pady=5)
+        hora_entry = ttkb.Entry(frame)
+        hora_entry.pack(pady=5, fill='x')
+
+        def schedule():
+            try:
+                clave = agenda.agendar_cita(paciente_entry.get(), fecha_entry.get(), hora_entry.get())
+                messagebox.showinfo("Éxito", f"Cita agendada con código: {clave}")
+                self.show_main_menu()
+            except Exception as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Agendar", bootstyle=SUCCESS, command=schedule).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
+
