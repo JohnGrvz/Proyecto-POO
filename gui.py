@@ -1,3 +1,4 @@
+from tkinter import messagebox
 import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
 
@@ -36,3 +37,44 @@ class DentalApp:
         self.pass_entry.pack(pady=5, fill='x')
 
         ttkb.Button(frame, text="Iniciar Sesión", bootstyle=SUCCESS, command=self.verify_login).pack(pady=20)
+
+    def verify_login(self):
+        """Verifica las credenciales de login"""
+        user = self.user_entry.get()
+        password = self.pass_entry.get()
+        if usuario_app.verificar_credenciales(user, password):
+            self.show_main_menu()
+        else:
+            messagebox.showerror("Error", "Credenciales incorrectas. Intente de nuevo.")
+
+    def clear_window(self):
+        """Limpia la ventana actual"""
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+    def show_main_menu(self):
+        """Muestra el menú principal"""
+        self.clear_window()
+        self.root.title("Menú Principal - Consultorio Odontológico")
+
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Menú Principal", font=("Helvetica", 18, "bold")).pack(pady=10)
+
+        buttons = [
+            ("Mostrar citas pendientes", self.show_pending_appointments),
+            ("Agendar nueva cita", self.show_schedule_appointment),
+            ("Mostrar citas con código", self.show_coded_appointments),
+            ("Marcar cita como realizada", self.show_mark_appointment),
+            ("Mostrar historias clínicas", self.show_clinical_histories),
+            ("Editar historia clínica", self.show_edit_history),
+            ("Mostrar historial de paciente", self.show_patient_history),
+            ("Buscar cita por paciente", self.search_appointment),
+            ("Cancelar cita", self.show_cancel_appointment),
+            ("Exportar historial a PDF", self.show_export_pdf),
+            ("Salir", self.exit_app)
+        ]
+
+        for text, command in buttons:
+            ttkb.Button(frame, text=text, bootstyle=PRIMARY, command=command, width=30).pack(pady=5, fill='x')
