@@ -1,26 +1,35 @@
-
+from cuidados_AI import generar_cuidados_por_ia
 from paciente import Paciente
+from errores import FechaHoraInvalidaError
+from datetime import datetime
 class Cita:
     contador_clave = 1
     def __init__(self, paciente, fecha, hora):
+        self.validar_fecha_hora(fecha, hora)
         self.paciente = paciente
         self.fecha = fecha
         self.hora = hora
         self.realizada = False
         self.numero_clave = f"{Cita.contador_clave:03d}"
         Cita.contador_clave += 1
+    @staticmethod
+    def validar_fecha_hora(fecha, hora):
+        try:
+            datetime.strptime(fecha, "%Y-%m-%d")
+            datetime.strptime(hora, "%I:%M %p")
+        except ValueError:
+            raise FechaHoraInvalidaError()
     def modificar_cita(self, nueva_fecha, nueva_hora):
         self.fecha = nueva_fecha
         self.hora = nueva_hora
-    def cancelar_cita(self):
-        self.fecha = None
-        self.hora = None
-        self.paciente = None
     def marcar_como_realizada(self, tratamiento, costo, pacientes_registrados):
         self.realizada = True
         if self.paciente not in pacientes_registrados:
             pacientes_registrados[self.paciente] = Paciente(self.paciente)
         pacientes_registrados[self.paciente].agregar_historia_clinica(tratamiento, costo, self.fecha)
+        cuidados = generar_cuidados_por_ia(tratamiento)
+        print("\n💡 Cuidados sugeridos por IA:")
+        print(cuidados + "\n")
     def __str__(self):
         estado = "Realizada" if self.realizada else "Pendiente"
         return f"Cita {self.numero_clave}: {self.paciente} - {self.fecha} a las {self.hora} ({estado})"
@@ -39,8 +48,8 @@ class Agenda:
                 return cita.numero_clave
         return None
     def cancelar_cita(self, clave):
-        for cita in self.citas:
-            if cita.numero_clave == clave:
-                cita.cancelar_cita()
-                return True
-        return False
+     for i, cita in enumerate(self.citas):
+        if cita.numero_clave == clave:
+            del self.citas[i]
+            return True
+     return False

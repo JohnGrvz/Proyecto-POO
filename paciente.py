@@ -21,6 +21,7 @@ class Paciente:
                 historia.costo = nuevo_costo
                 return True  # Indica que la historia fue editada exitosamente
         return False  # No se encontró una historia con esa fecha
+
     def obtener_historial_como_texto(self):
         if not self.historial:
             return f"Paciente: {self.nombre} - No tiene historias clínicas registradas."
