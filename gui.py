@@ -144,3 +144,22 @@ class DentalApp:
 
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
 
+    def show_clinical_histories(self):
+        """Muestra todas las historias clínicas"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Historias Clínicas", font=("Helvetica", 16, "bold")).pack(pady=10)
+        text_area = ttkb.Text(frame, height=15)
+        text_area.pack(fill='both', expand=True, padx=10, pady=10)
+
+        if not pacientes_registrados:
+            text_area.insert(tk.END, "No hay registros\n")
+        else:
+            for paciente in pacientes_registrados.values():
+                text_area.insert(tk.END, paciente.obtener_historial_como_texto() + "\n")
+        text_area.config(state='disabled')
+
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
