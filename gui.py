@@ -250,3 +250,33 @@ class DentalApp:
         ttkb.Button(frame, text="Mostrar", bootstyle=SUCCESS, command=show).pack(pady=10)
         ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
 
+    def search_appointment(self):
+        """Busca cita por nombre de paciente"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Buscar Cita por Paciente", font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttkb.Label(frame, text="Nombre del paciente:").pack(pady=5)
+        nombre_entry = ttkb.Entry(frame)
+        nombre_entry.pack(pady=5, fill='x')
+
+        def search():
+            try:
+                nombre = nombre_entry.get().strip()
+
+                if not nombre:
+                    raise CamposObligatoriosVaciosError("Debe ingresar el nombre del paciente.")
+
+                clave = agenda.buscar_cita(nombre)
+
+                if clave:
+                    messagebox.showinfo("Resultado", f"Código de la cita: {clave}")
+                else:
+                    raise ValueError("No se encontró una cita para ese paciente.")
+
+            except (CamposObligatoriosVaciosError, ValueError) as e:
+                messagebox.showerror("Error", str(e))
+
+        ttkb.Button(frame, text="Buscar", bootstyle=SUCCESS, command=search).pack(pady=10)
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=5)
