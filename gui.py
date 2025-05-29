@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import messagebox
 import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
@@ -78,3 +79,21 @@ class DentalApp:
 
         for text, command in buttons:
             ttkb.Button(frame, text=text, bootstyle=PRIMARY, command=command, width=30).pack(pady=5, fill='x')
+
+    def show_pending_appointments(self):
+        """Muestra las citas pendientes"""
+        self.clear_window()
+        frame = ttkb.Frame(self.root, padding=20)
+        frame.pack(expand=True, fill='both')
+
+        ttkb.Label(frame, text="Citas Pendientes", font=("Helvetica", 16, "bold")).pack(pady=10)
+        text_area = ttkb.Text(frame, height=15)
+        text_area.pack(fill='both', expand=True, padx=10, pady=10)
+
+        for cita in agenda.citas:
+            if not cita.realizada:
+                text_area.insert(tk.END, str(cita) + "\n")
+        text_area.config(state='disabled')
+
+        ttkb.Button(frame, text="Volver", bootstyle=SECONDARY, command=self.show_main_menu).pack(pady=10)
+
